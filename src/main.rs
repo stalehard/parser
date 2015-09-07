@@ -34,12 +34,6 @@ fn main() {
         .ok()
         .expect("Connect to db failed");
 
-
-
-//    for row in pool.prep_exec("select id from news limit 1", ()).unwrap() {
-//
-//    }
-
 //    let collect_news: Vec<News> = pool.prep_exec("SELECT id, title from news limit 5", ()).map(|result| {
 //        result.map(|row| {
 //            let (id, title) = from_row(row.unwrap());
@@ -57,76 +51,39 @@ fn main() {
     let client = Client::new();
 
     // Creating an outgoing request.
-    let mut res = client.get("http://myudm.ru/news/archive/6").send()
+    let mut res = client.get("http://www.myudm.ru/news/archive/6").send()
         .ok()
         .expect("Failed to get data");
 
     // Read the Response.
     let mut buf: Vec<u8> = Vec::new();
+    let mut string = String::new();
 
-    res.read_to_end(&mut buf).unwrap();
-    let chunks = buf.chunks(1000);
-
-    for el in chunks {
-        match from_utf8(el) {
-            Ok(r) => println!("{:?}", r),
-            Err(e) => println!("{:?}", e),
-        }
-    }
-
-
-
-
-
-//    let ch = res.bytes();
-//    let mut i = 0;
-//    for c in ch {
-//        println!("bytes {:?}", c);
-//        i = i + 1;
-//    }
-//
-//    println!("{}", i);
-
-//    loop {
-//        let c = res.
-//    }
-//
-//    let mut x = 0;
-//    for c in res.chars() {
-//        println!("{}", x);
-//        x += 1;
-//    }
-
-
-
-
-
-//    let s = String::from_utf8(buf).err().unwrap();
-//    let err = s.utf8_error();
-
-//    let s = match String::from_utf8(buf) {
-//        Ok(s) => s,
-//        Err(err) =>  {
-//            println!("{}", err);
-//            return;
-//        }
+//    match res.read_to_end(&mut buf) {
+//        Ok(r) => println!("{:?}", r),
+//        Err(e) => println!("{:?}", e),
 //    };
 
+//    let chunks = buf.chunks(1000);
+//
+//    for el in chunks {
+//        match from_utf8(el) {
+//            Ok(r) => println!("{:?}", r),
+//            Err(e) => println!("{:?}", e),
+//        }
+//    }
+
+    match res.read_to_string(&mut string) {
+        Ok(r) => println!("{:?}", r),
+        Err(e) => println!("{:?}", e),
+    }
+
+    println!("{}", string);
 
 
-//    let s = String::from_utf8(buf)
-//        .ok()
-//        .expect("Failed to get data");
-
-
-//    println!("{:?}", size);
-
-
-
-//    println!("{}", body);
-
-
-    //println!("Response: {:?}", rss.);
+//    for c in res.chars() {
+//        println!("{}", c.unwrap());
+//    }
 }
 
 
