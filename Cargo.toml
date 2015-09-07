@@ -7,4 +7,5 @@ authors = ["Andrey Ivanov <aivanov@65apps.com>"]
 rand="*"
 hyper="*"
 mysql = "*"
+html5ever = "*"
 

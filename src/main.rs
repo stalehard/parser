@@ -1,10 +1,12 @@
 #![feature(io)]
-
 extern crate hyper;
 extern crate mysql;
+extern crate html5ever;
 
 use std::default::Default;
 use std::io::Read;
+use std::string::String;
+use std::str::from_utf8;
 
 use hyper::Client;
 use hyper::header::Connection;
@@ -13,7 +15,7 @@ use mysql::conn::MyOpts;
 use mysql::conn::pool::MyPool;
 use mysql::value::{from_value, from_row};
 
-
+use html5ever::driver::parse;
 
 struct News {
     id: String,
@@ -31,6 +33,7 @@ fn main() {
     let pool = MyPool::new(opts)
         .ok()
         .expect("Connect to db failed");
+
 
 
 //    for row in pool.prep_exec("select id from news limit 1", ()).unwrap() {
@@ -59,20 +62,30 @@ fn main() {
         .expect("Failed to get data");
 
     // Read the Response.
-//    let mut buf: Vec<u8> = Vec::new();
-    let mut s = String::new();
+    let mut buf: Vec<u8> = Vec::new();
 
-//    match res.read_to_string(&mut s) {
-//        Ok(r) => println!("{}", s),
-//        Err(e) => println!("Error, {}", e)
-//    };
+    res.read_to_end(&mut buf).unwrap();
+    let chunks = buf.chunks(1000);
 
-    let ch = res.chars();
-    for c in ch {
-        println!("{:?}", c);
+    for el in chunks {
+        match from_utf8(el) {
+            Ok(r) => println!("{:?}", r),
+            Err(e) => println!("{:?}", e),
+        }
     }
 
 
+
+
+
+//    let ch = res.bytes();
+//    let mut i = 0;
+//    for c in ch {
+//        println!("bytes {:?}", c);
+//        i = i + 1;
+//    }
+//
+//    println!("{}", i);
 
 //    loop {
 //        let c = res.
